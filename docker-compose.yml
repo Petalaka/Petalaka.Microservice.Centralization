@@ -45,6 +45,7 @@ services:
     build:
       context: ./Petalaka.AccountService
       dockerfile: Dockerfile
+    restart: unless-stopped
     networks:
       - petalaka-accountservice-network
       - petalaka.api.gateway
