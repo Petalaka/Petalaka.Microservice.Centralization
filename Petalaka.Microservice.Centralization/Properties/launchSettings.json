@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Petalaka.Microservice.Centralization": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

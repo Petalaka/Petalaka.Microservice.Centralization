@@ -1,0 +1,9 @@
+[submodule "Petalaka.AccountService"]
+	path = Petalaka.AccountService
+	url = https://github.com/Petalaka/Petalaka.AccountService.git
+[submodule "Petalaka.ApiGateWay"]
+	path = Petalaka.ApiGateWay
+	url = https://github.com/Petalaka/Petalaka.ApiGateWay.git
+[submodule "Petalaka.EmailService"]
+	path = Petalaka.EmailService
+	url = https://github.com/Petalaka/Petalaka.EmailService.git

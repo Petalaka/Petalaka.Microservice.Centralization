@@ -1,0 +1,73 @@
+version: '3.4'
+
+services:
+  #-------------------------------------------------------Tools and services-------------------------------------------------------#
+  #RabbitMQ
+  petalaka.rabbitmq:
+    image: rabbitmq:management
+    container_name: petalaka.rabbitmq
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: rabbitmqsecretpassword123
+    networks:
+      - petalaka.rabbitmq_network
+  #Account-service sqlserver
+  petalaka.account.sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "StrongDatabasePassword!@#123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1434:1433"
+    networks:
+      - petalaka-accountservice-network
+    volumes:
+      - petalaka-account-sqlserver:/var/opt/mssql
+
+  #-------------------------------------------------------API-------------------------------------------------------#
+
+  #API Gateway
+  petalaka.apigateway:
+    build:
+      context: ./Petalaka.ApiGateWay
+      dockerfile: Dockerfile
+    depends_on:
+      - petalaka.email.api
+      - petalaka.account.api
+    networks:
+      - petalaka.api.gateway
+
+  #Account-service API
+  petalaka.account.api:
+    build:
+      context: ./Petalaka.AccountService
+      dockerfile: Dockerfile
+    networks:
+      - petalaka-accountservice-network
+      - petalaka.api.gateway
+    depends_on: 
+      - petalaka.account.sqlserver
+
+  #Email-service API
+  petalaka.email.api:
+    build:
+      context: ./Petalaka.EmailService
+      dockerfile: Dockerfile
+    depends_on:
+      - petalaka.rabbitmq
+    networks:
+      - petalaka.api.gateway
+  #-------------------------------------------------------API-------------------------------------------------------#
+
+networks:
+    petalaka-accountservice-network: 
+      driver: bridge
+    petalaka.rabbitmq_network:
+      driver: bridge
+    petalaka.api.gateway:
+      driver: bridge
+volumes:
+  petalaka-account-sqlserver:
