@@ -7,3 +7,6 @@
 [submodule "Petalaka.EmailService"]
 	path = Petalaka.EmailService
 	url = https://github.com/Petalaka/Petalaka.EmailService.git
+[submodule "Petalaka.PetStores"]
+	path = Petalaka.PetStores
+	url = https://github.com/Petalaka/Petalaka.PetStores.git
