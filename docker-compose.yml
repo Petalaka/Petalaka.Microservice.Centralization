@@ -26,6 +26,18 @@ services:
       - petalaka-accountservice-network
     volumes:
       - petalaka-account-sqlserver:/var/opt/mssql
+ 
+  petalaka.petstore.sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "StrongDatabasePassword!@#123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1435:1433"
+    networks:
+      - petalaka-petstore-network
+    volumes:
+      - petalaka-petstore-sqlserver:/var/opt/mssql
 
   #-------------------------------------------------------API-------------------------------------------------------#
 
@@ -60,6 +72,16 @@ services:
       - petalaka.rabbitmq
     networks:
       - petalaka.api.gateway
+
+  petalaka.petstore.api:
+    build:
+      context: ./Petalaka.PetStores
+      dockerfile: Dockerfile
+    networks:
+      - petalaka-petstore-network
+      - petalaka.api.gateway
+    depends_on: 
+      - petalaka.account.sqlserver
   #-------------------------------------------------------API-------------------------------------------------------#
 
 networks:
@@ -69,5 +91,8 @@ networks:
       driver: bridge
     petalaka.api.gateway:
       driver: bridge
+    petalaka-petstore-network:
+      driver: bridge
 volumes:
   petalaka-account-sqlserver:
+  petalaka-petstore-sqlserver:  
