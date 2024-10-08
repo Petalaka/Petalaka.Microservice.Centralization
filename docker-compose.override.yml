@@ -22,3 +22,9 @@ services:
         - ASPNETCORE_HTTP_PORTS=8080
         ports:
         - "8082:8080"
+    petalaka.petstore.api:
+        environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_HTTP_PORTS=8080
+        ports:
+        - "8083:8080"

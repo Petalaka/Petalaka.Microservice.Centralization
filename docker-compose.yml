@@ -60,6 +60,7 @@ services:
     networks:
       - petalaka-accountservice-network
       - petalaka.api.gateway
+    restart: always
     depends_on: 
       - petalaka.account.sqlserver
 
