@@ -26,7 +26,7 @@ services:
       - petalaka-accountservice-network
     volumes:
       - petalaka-account-sqlserver:/var/opt/mssql
- 
+  #Petstore-service sqlserver
   petalaka.petstore.sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
@@ -38,6 +38,18 @@ services:
       - petalaka-petstore-network
     volumes:
       - petalaka-petstore-sqlserver:/var/opt/mssql
+  #Payment-service sqlserver
+  petalaka.payment.sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "StrongDatabasePassword!@#123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1435:1433"
+    networks:
+      - petalaka-payment-network
+    volumes:
+      - petalaka-payment-sqlserver:/var/opt/mssql
 
   #-------------------------------------------------------API-------------------------------------------------------#
 
@@ -60,7 +72,7 @@ services:
     networks:
       - petalaka-accountservice-network
       - petalaka.api.gateway
-    restart: always
+    restart: unless-stopped
     depends_on: 
       - petalaka.account.sqlserver
 
@@ -73,7 +85,9 @@ services:
       - petalaka.rabbitmq
     networks:
       - petalaka.api.gateway
+    restart: unless-stopped
 
+  #Petstore-service API
   petalaka.petstore.api:
     build:
       context: ./Petalaka.PetStores
@@ -82,7 +96,20 @@ services:
       - petalaka-petstore-network
       - petalaka.api.gateway
     depends_on: 
-      - petalaka.account.sqlserver
+      - petalaka.petstore.sqlserver
+    restart: unless-stopped
+    
+  #Petstore-service API
+  petalaka.payment.api:
+    build:
+      context: ./Petalaka.Payment
+      dockerfile: Dockerfile
+    networks:
+      - petalaka-payment-network
+      - petalaka.api.gateway
+    depends_on:
+      - petalaka.payment.sqlserver
+    restart: unless-stopped
   #-------------------------------------------------------API-------------------------------------------------------#
 
 networks:
@@ -94,6 +121,9 @@ networks:
       driver: bridge
     petalaka-petstore-network:
       driver: bridge
+    petalaka-payment-network: 
+      driver: bridge
 volumes:
   petalaka-account-sqlserver:
-  petalaka-petstore-sqlserver:  
+  petalaka-petstore-sqlserver:
+  petalaka-payment-sqlserver:
