@@ -10,3 +10,9 @@
 [submodule "Petalaka.PetStores"]
 	path = Petalaka.PetStores
 	url = https://github.com/Petalaka/Petalaka.PetStores.git
+[submodule "Petalaka.Payment"]
+	path = Petalaka.Payment
+	url = https://github.com/Petalaka/Petalaka.Payment.git
+[submodule "Petalaka.PaymentService"]
+	path = Petalaka.PaymentService
+	url = https://github.com/Petalaka/Petalaka.PaymentService.git

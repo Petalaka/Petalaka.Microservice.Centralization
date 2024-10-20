@@ -99,10 +99,10 @@ services:
       - petalaka.petstore.sqlserver
     restart: unless-stopped
     
-  #Petstore-service API
+  #Payment-service API
   petalaka.payment.api:
     build:
-      context: ./Petalaka.Payment
+      context: ./Petalaka.PaymentService
       dockerfile: Dockerfile
     networks:
       - petalaka-payment-network
